@@ -7,8 +7,6 @@ from pico2d import *
 import game_framework
 import title_state
 
-
-
 name = "MainState"
 
 move = True
@@ -28,6 +26,8 @@ class Back:
         self.image.draw(400,300)
 
 class Whale:
+    speed = [21, 19, 17, 15, 13, 11, 9, 7, 5, 3]
+
     def __init__(self):
         self.x, self.y = 400, 300
         #self.frame = 0
@@ -36,18 +36,18 @@ class Whale:
         self.state = 4 #stop
         self.dir = True
         self.level = 0
-        self.speed = [21, 19, 17, 15, 13, 11, 9, 7, 5, 3]
+        self.distance = Whale.speed[self.level] * frame_time
 
     def update(self):
         #self.frame = (self.frame + 1) % 8
         if self.state == 0 and self.y < 580: #up
-            self.y += self.speed[self.level]
+            self.y += self.distance
         elif self.state == 1 and self.y > 20: #down
-            self.y -= self.speed[self.level]
+            self.y -= self.distance
         elif self.state == 2 and self.x < 750: #right
-            self.x += self.speed[self.level]
+            self.x += self.distance
         elif self.state == 3 and self.x > 50: #left
-            self.x -= self.speed[self.level]
+            self.x -= self.distance
 
     def draw(self):
         #self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
@@ -245,6 +245,16 @@ class Tuna:
 
 
 
+current_time = 0.0
+
+def get_frame_time():
+
+    global current_time
+
+    frame_time = get_time() - current_time
+    current_time += frame_time
+    return frame_time
+
 
 
 def enter():
@@ -255,6 +265,7 @@ def enter():
     goldfish = [GoldFish() for i in range(7)]
     greenfish = [GreenFish() for i in range(3)]
     tuna = [Tuna() for i in range(3)]
+
 
 
 
@@ -305,6 +316,7 @@ def collide(a, b):
 
 def update():
     whale.update()
+    global current_time
     for i in yellowfish:
         i.update()
         if collide(whale, i):
@@ -324,8 +336,7 @@ def update():
         i.update()
         # if collide(whale, i):
         #     tuna.remove(i)
-
-
+    current_time = get_time()
 
 
 def draw():
@@ -345,6 +356,8 @@ def draw():
         i.draw_bb()
     whale.draw()
     whale.draw_bb()
+
+
 
 
 
