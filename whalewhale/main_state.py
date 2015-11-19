@@ -26,6 +26,7 @@ class Back:
         self.image.draw(400,300)
 
 class Whale:
+
     speed = [21, 19, 17, 15, 13, 11, 9, 7, 5, 3]
 
     def __init__(self):
