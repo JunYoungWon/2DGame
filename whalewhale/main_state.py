@@ -22,8 +22,19 @@ running = True
 class Back:
     def __init__(self):
         self.image = load_image('Resources//back.png')
+        self.life_image = load_image('Resources//life_back.png')
+        self.life_bar_back_image = load_image('Resources//life_bar_back.png')
+        self.life_bar_image = load_image('Resources//life_bar.png')
+        self.mission_image = load_image('Resources//mission_back_o.png')
+        self.level_image = load_image('Resources//level_back.png')
     def draw(self):
         self.image.draw(400,300)
+        self.life_image.draw(155, 560)
+        self.life_bar_back_image.draw(190, 560)
+        self.life_bar_image.draw(190, 560)
+        self.mission_image.draw(485, 70)
+        self.level_image.draw(120, 70)
+
 
 class Whale:
 
@@ -34,6 +45,7 @@ class Whale:
     RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
     speed = [21, 19, 17, 15, 13, 11, 9, 7, 5, 3]
+    UP, DOWN, LEFT, RIGHT, STOP = 0, 1, 2, 3, 4
 
     image_right = None
 
@@ -62,21 +74,20 @@ class Whale:
                             load_image('Resources//9L.png'),
                             load_image('Resources//10L.png')]
 
-        self.level = 9
-        self.state = 4 #stop
+        self.level = 0
+        self.state = Whale.STOP
         self.dir = True
 
 
     def update(self):
-        #self.frame = (self.frame + 1) % 8
         # distance = Whale.speed[self.level]
-        if self.state == 0 and self.y < 580: #up
+        if self.state == Whale.UP and self.y < 580: #up
             self.y += 2
-        elif self.state == 1 and self.y > 20: #down
+        elif self.state == Whale.DOWN and self.y > 20: #down
             self.y -= 2
-        elif self.state == 2 and self.x < 750: #right
+        elif self.state == Whale.RIGHT and self.x < 750: #right
             self.x += 2
-        elif self.state == 3 and self.x > 50: #left
+        elif self.state == Whale.LEFT and self.x > 50: #left
             self.x -= 2
 
     def draw(self):
@@ -86,8 +97,13 @@ class Whale:
             self.image_left[self.level].draw(self.x, self.y)
 
     def get_bb(self):
-        return self.x - (self.level + 1) * 10, self.y - (self.level + 1) * 8,\
-               self.x + (self.level + 1) * 10, self.y + (self.level + 1) * 7
+        if self.level == 0 or self.level == 1:
+            return self.x - 13 *(self.level + 1), self.y - 13 * (self.level + 1),\
+               self.x + 13 * (self.level + 1), self.y + 13 * (self.level + 1)
+
+        else:
+            return self.x - (self.level + 1) * 10, self.y - (self.level + 1) * 8,\
+                   self.x + (self.level + 1) * 10, self.y + (self.level + 1) * 7
 
 
     def draw_bb(self):
@@ -96,7 +112,7 @@ class Whale:
 class YellowFish:
     def __init__(self):
         self.dir = random.randint(0,1)
-        self.x, self.y = 800 * self.dir, random.randint(0,600)
+        self.x, self.y = 800 * self.dir, random.randint(100,600)
         self.frame = 0
         self.image_right = load_image('Resources//Ryellowfish.png')
         self.image_left = load_image('Resources//Lyellowfish.png')
@@ -129,7 +145,7 @@ class YellowFish:
 class GoldFish:
     def __init__(self):
         self.dir = random.randint(0,1)
-        self.x, self.y = 800 * self.dir, random.randint(0,600)
+        self.x, self.y = 800 * self.dir, random.randint(100,600)
         self.frame = 0
         self.image_right = load_image('Resources//Rgoldfish.png')
         self.image_left = load_image('Resources//Lgoldfish.png')
@@ -162,7 +178,7 @@ class GoldFish:
 class GreenFish:
     def __init__(self):
         self.dir = random.randint(0,1)
-        self.x, self.y = 800 * self.dir, random.randint(0,600)
+        self.x, self.y = 800 * self.dir, random.randint(100,600)
         self.frame = 0
         self.image_right = load_image('Resources//Rgreenfish.png')
         self.image_left = load_image('Resources//Lgreenfish.png')
@@ -195,7 +211,7 @@ class GreenFish:
 class Tuna:
     def __init__(self):
         self.dir = random.randint(0,1)
-        self.x, self.y = 800 * self.dir, random.randint(0,600)
+        self.x, self.y = 800 * self.dir, random.randint(100,600)
         self.frame = 0
         self.image_right = load_image('Resources//Rtuna.png')
         self.image_left = load_image('Resources//Ltuna.png')
@@ -259,17 +275,17 @@ def handle_events():
                running = False
                game_framework.change_state(title_state)
             if event.key == SDLK_UP:
-                whale.state = 0
+                whale.state = Whale.UP
             if event.key == SDLK_DOWN:
-                whale.state = 1
+                whale.state = Whale.DOWN
             if event.key == SDLK_RIGHT:
-                whale.state = 2
+                whale.state = Whale.RIGHT
                 whale.dir = True
             if event.key == SDLK_LEFT:
-                whale.state = 3
+                whale.state = Whale.LEFT
                 whale.dir = False
         elif event.type != SDL_KEYDOWN:
-            whale.state = 4
+            whale.state = Whale.STOP
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
