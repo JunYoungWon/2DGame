@@ -21,7 +21,7 @@ running = True
 
 class Back:
     def __init__(self):
-        self.image = load_image('back.png')
+        self.image = load_image('Resources//back.png')
     def draw(self):
         self.image.draw(400,300)
 
@@ -38,8 +38,8 @@ class Whale:
     def __init__(self):
         self.x, self.y = 400, 300
         #self.frame = 0
-        self.image_right = load_image('9L.png')
-        self.image_left = load_image('8L.png')
+        self.image_right = load_image('Resources//8R.png')
+        self.image_left = load_image('Resources//8L.png')
         self.state = 4 #stop
         self.dir = True
         self.level = 0
@@ -121,8 +121,8 @@ class YellowFish:
         self.dir = random.randint(0,1)
         self.x, self.y = 800 * self.dir, random.randint(0,600)
         self.frame = 0
-        self.image_right = load_image('Ryellowfish.png')
-        self.image_left = load_image('Lyellowfish.png')
+        self.image_right = load_image('Resources//Ryellowfish.png')
+        self.image_left = load_image('Resources//Lyellowfish.png')
         self.speed = random.randint(3,5)
 
     def update(self):
@@ -138,13 +138,10 @@ class YellowFish:
             self.dir = 0
 
     def draw(self):
-        #self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
         if self.dir == 0:
-            #self.image_right.draw(self.x, self.y)
-            self.image_right.clip_draw(self.frame*65, 0, 65, 40, self.x, self.y)
+            self.image_right.clip_draw(self.frame*40, 0, 40, 25, self.x, self.y)
         else:
-            #self.image_left.draw(self.x, self.y)
-            self.image_left.clip_draw(self.frame*65, 0, 65, 40, self.x, self.y)
+            self.image_left.clip_draw(self.frame*40, 0, 40, 25, self.x, self.y)
 
     def get_bb(self):
         return self.x - 32, self.y - 20, self.x + 32, self.y + 20
@@ -157,8 +154,8 @@ class GoldFish:
         self.dir = random.randint(0,1)
         self.x, self.y = 800 * self.dir, random.randint(0,600)
         self.frame = 0
-        self.image_right = load_image('Rgoldfish.png')
-        self.image_left = load_image('Lgoldfish.png')
+        self.image_right = load_image('Resources//Rgoldfish.png')
+        self.image_left = load_image('Resources//Lgoldfish.png')
         self.speed = random.randint(3,6)
 
     def update(self):
@@ -190,8 +187,8 @@ class GreenFish:
         self.dir = random.randint(0,1)
         self.x, self.y = 800 * self.dir, random.randint(0,600)
         self.frame = 0
-        self.image_right = load_image('Rgreenfish.png')
-        self.image_left = load_image('Lgreenfish.png')
+        self.image_right = load_image('Resources//Rgreenfish.png')
+        self.image_left = load_image('Resources//Lgreenfish.png')
         self.speed = random.randint(2,5)
 
     def update(self):
@@ -208,9 +205,9 @@ class GreenFish:
 
     def draw(self):
         if self.dir == 0:
-            self.image_right.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+            self.image_right.clip_draw(self.frame*120, 0, 120, 120, self.x, self.y)
         else:
-            self.image_left.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+            self.image_left.clip_draw(self.frame*120, 0, 120, 120, self.x, self.y)
 
     def get_bb(self):
         return self.x - 50, self.y - 30, self.x + 50, self.y + 30
@@ -223,8 +220,8 @@ class Tuna:
         self.dir = random.randint(0,1)
         self.x, self.y = 800 * self.dir, random.randint(0,600)
         self.frame = 0
-        self.image_right = load_image('Rtuna.png')
-        self.image_left = load_image('Ltuna.png')
+        self.image_right = load_image('Resources//Rtuna.png')
+        self.image_left = load_image('Resources//Ltuna.png')
         self.speed = random.randint(3,6)
 
     def update(self):
@@ -241,9 +238,9 @@ class Tuna:
 
     def draw(self):
         if self.dir == 0:
-            self.image_right.clip_draw(self.frame*130, 0, 130, 78, self.x, self.y)
+            self.image_right.clip_draw(self.frame*175, 0, 175, 105, self.x, self.y)
         else:
-            self.image_left.clip_draw(self.frame*130, 0, 130, 78, self.x, self.y)
+            self.image_left.clip_draw(self.frame*175, 0, 175, 105, self.x, self.y)
 
     def get_bb(self):
         return self.x - 65, self.y - 30, self.x + 65, self.y + 35
