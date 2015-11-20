@@ -27,28 +27,35 @@ class Back:
 
 class Whale:
 
+    PIXEL_PER_METER = (10.0 / 0.3)  #10 pixel 30cm
+    RUN_SPEED_KMPH = 20.0   #km / hour
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 10.0)
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
     speed = [21, 19, 17, 15, 13, 11, 9, 7, 5, 3]
 
     def __init__(self):
         self.x, self.y = 400, 300
         #self.frame = 0
-        self.image_right = load_image('rfish.png')
-        self.image_left = load_image('fish.png')
+        self.image_right = load_image('9L.png')
+        self.image_left = load_image('8L.png')
         self.state = 4 #stop
         self.dir = True
         self.level = 0
-        self.distance = Whale.speed[self.level] * frame_time
+
 
     def update(self):
         #self.frame = (self.frame + 1) % 8
+        # distance = Whale.speed[self.level]
         if self.state == 0 and self.y < 580: #up
-            self.y += self.distance
+            self.y += 2
         elif self.state == 1 and self.y > 20: #down
-            self.y -= self.distance
+            self.y -= 2
         elif self.state == 2 and self.x < 750: #right
-            self.x += self.distance
+            self.x += 2
         elif self.state == 3 and self.x > 50: #left
-            self.x -= self.distance
+            self.x -= 2
 
     def draw(self):
         #self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
@@ -246,17 +253,6 @@ class Tuna:
 
 
 
-current_time = 0.0
-
-def get_frame_time():
-
-    global current_time
-
-    frame_time = get_time() - current_time
-    current_time += frame_time
-    return frame_time
-
-
 
 def enter():
     global whale, back, yellowfish, goldfish, greenfish, tuna
@@ -266,9 +262,6 @@ def enter():
     goldfish = [GoldFish() for i in range(7)]
     greenfish = [GreenFish() for i in range(3)]
     tuna = [Tuna() for i in range(3)]
-
-
-
 
 def exit():
     close_canvas()
@@ -317,7 +310,6 @@ def collide(a, b):
 
 def update():
     whale.update()
-    global current_time
     for i in yellowfish:
         i.update()
         if collide(whale, i):
@@ -337,7 +329,6 @@ def update():
         i.update()
         # if collide(whale, i):
         #     tuna.remove(i)
-    current_time = get_time()
 
 
 def draw():
@@ -357,10 +348,6 @@ def draw():
         i.draw_bb()
     whale.draw()
     whale.draw_bb()
-
-
-
-
 
     update_canvas()
     delay(0.05)
