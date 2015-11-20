@@ -35,14 +35,36 @@ class Whale:
 
     speed = [21, 19, 17, 15, 13, 11, 9, 7, 5, 3]
 
+    image_right = None
+
     def __init__(self):
         self.x, self.y = 400, 300
-        #self.frame = 0
-        self.image_right = load_image('Resources//8R.png')
-        self.image_left = load_image('Resources//8L.png')
+
+        self.image_right = [load_image('Resources//1R.png'),
+                            load_image('Resources//2R.png'),
+                            load_image('Resources//3R.png'),
+                            load_image('Resources//4R.png'),
+                            load_image('Resources//5R.png'),
+                            load_image('Resources//6R.png'),
+                            load_image('Resources//7R.png'),
+                            load_image('Resources//8R.png'),
+                            load_image('Resources//9R.png'),
+                            load_image('Resources//10R.png')]
+
+        self.image_left = [load_image('Resources//1L.png'),
+                            load_image('Resources//2L.png'),
+                            load_image('Resources//3L.png'),
+                            load_image('Resources//4L.png'),
+                            load_image('Resources//5L.png'),
+                            load_image('Resources//6L.png'),
+                            load_image('Resources//7L.png'),
+                            load_image('Resources//8L.png'),
+                            load_image('Resources//9L.png'),
+                            load_image('Resources//10L.png')]
+
+        self.level = 9
         self.state = 4 #stop
         self.dir = True
-        self.level = 0
 
 
     def update(self):
@@ -58,60 +80,15 @@ class Whale:
             self.x -= 2
 
     def draw(self):
-        #self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
-        if self.level == 0:
-            if self.dir == True:
-                self.image_right.draw(self.x, self.y)
-            else:
-                self.image_left.draw(self.x, self.y)
-        elif self.level == 1:
-            if self.dir == True:
-                self.image_right.draw(self.x, self.y)
-            else:
-                self.image_left.draw(self.x, self.y)
-        elif self.level == 2:
-            if self.dir == True:
-                self.image_right.draw(self.x, self.y)
-            else:
-                self.image_left.draw(self.x, self.y)
-        elif self.level == 3:
-            if self.dir == True:
-                self.image_right.draw(self.x, self.y)
-            else:
-                self.image_left.draw(self.x, self.y)
-        elif self.level == 4:
-            if self.dir == True:
-                self.image_right.draw(self.x, self.y)
-            else:
-                self.image_left.draw(self.x, self.y)
-        elif self.level == 5:
-            if self.dir == True:
-                self.image_right.draw(self.x, self.y)
-            else:
-                self.image_left.draw(self.x, self.y)
-        elif self.level == 6:
-            if self.dir == True:
-                self.image_right.draw(self.x, self.y)
-            else:
-                self.image_left.draw(self.x, self.y)
-        elif self.level == 7:
-            if self.dir == True:
-                self.image_right.draw(self.x, self.y)
-            else:
-                self.image_left.draw(self.x, self.y)
-        elif self.level == 8:
-            if self.dir == True:
-                self.image_right.draw(self.x, self.y)
-            else:
-                self.image_left.draw(self.x, self.y)
-        elif self.level == 9:
-            if self.dir == True:
-                self.image_right.draw(self.x, self.y)
-            else:
-                self.image_left.draw(self.x, self.y)
+        if self.dir == True:
+            self.image_right[self.level].draw(self.x, self.y)
+        else:
+            self.image_left[self.level].draw(self.x, self.y)
 
     def get_bb(self):
-        return self.x - 70, self.y - 50, self.x + 70, self.y + 40
+        return self.x - (self.level + 1) * 10, self.y - (self.level + 1) * 8,\
+               self.x + (self.level + 1) * 10, self.y + (self.level + 1) * 7
+
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
@@ -144,7 +121,7 @@ class YellowFish:
             self.image_left.clip_draw(self.frame*40, 0, 40, 25, self.x, self.y)
 
     def get_bb(self):
-        return self.x - 32, self.y - 20, self.x + 32, self.y + 20
+        return self.x - 18, self.y - 10, self.x + 18, self.y + 10
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
@@ -177,7 +154,7 @@ class GoldFish:
             self.image_left.clip_draw(self.frame*80, 0, 80, 60, self.x, self.y)
 
     def get_bb(self):
-        return self.x - 40, self.y - 25, self.x + 40, self.y + 30
+        return self.x - 35, self.y - 12, self.x + 35, self.y + 18
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
@@ -210,7 +187,7 @@ class GreenFish:
             self.image_left.clip_draw(self.frame*120, 0, 120, 120, self.x, self.y)
 
     def get_bb(self):
-        return self.x - 50, self.y - 30, self.x + 50, self.y + 30
+        return self.x - 40, self.y - 25, self.x + 40, self.y + 25
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
@@ -243,7 +220,7 @@ class Tuna:
             self.image_left.clip_draw(self.frame*175, 0, 175, 105, self.x, self.y)
 
     def get_bb(self):
-        return self.x - 65, self.y - 30, self.x + 65, self.y + 35
+        return self.x - 53, self.y - 25, self.x + 53, self.y + 25
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
