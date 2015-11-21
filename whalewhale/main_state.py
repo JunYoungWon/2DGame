@@ -31,11 +31,22 @@ class Mission:
         self.eat_green = 0
         self.eat_tuna = 0
 
+        self.mission_count_3 = load_image('Resources//num3.png')
+        self.mission_count_4 = load_image('Resources//level_back.png')
+        self.mission_count_5 = load_image('Resources//level_back.png')
+
     def update(self):
         self.eat_yellow = self.yellow_count[Whale.level]
         self.eat_gold = self.gold_count[Whale.level]
         self.eat_green = self.green_count[Whale.level]
         self.eat_tuna = self.tuna_count[Whale.level]
+
+    def draw(self):
+        if self.yellow_count[Whale.level] == 3:
+            self.mission_count_3.draw(250, 30)
+
+        # self.mission_count_4.draw()
+        # self.mission_count_5.draw()
 
 class Back:
     def __init__(self):
@@ -46,9 +57,7 @@ class Back:
         self.mission_image = load_image('Resources//mission_back_o.png')
         self.level_image = load_image('Resources//level_back.png')
 
-        self.mission_count_3 = load_image('Resources//num3.png')
-        self.mission_count_4 = load_image('Resources//level_back.png')
-        self.mission_count_5 = load_image('Resources//level_back.png')
+
     def draw(self):
         self.image.draw(400,300)
         self.life_image.draw(155, 560)
@@ -57,9 +66,7 @@ class Back:
         self.mission_image.draw(485, 70)
         self.level_image.draw(120, 70)
 
-        self.mission_count_3.draw(250, 30)
-        # self.mission_count_4.draw()
-        # self.mission_count_5.draw()
+
 
 
 class Whale:
