@@ -19,6 +19,24 @@ greenfish = None
 tuna = None
 running = True
 
+class Mission:
+    def __init__(self):
+        self.yellow_count =[3, 4, 5, 4, 5, 0, 0, 0, 0, 0]
+        self.gold_count =  [0, 3, 4, 3, 4, 4, 5, 0, 0, 0]
+        self.green_count = [0, 0, 0, 3, 3, 4, 4, 4, 5, 5]
+        self.tuna_count =  [0, 0, 0, 0, 0, 3, 3, 4, 4, 5]
+
+        self.eat_yellow = 0
+        self.eat_gold = 0
+        self.eat_green = 0
+        self.eat_tuna = 0
+
+    def update(self):
+        self.eat_yellow = self.yellow_count[Whale.level]
+        self.eat_gold = self.gold_count[Whale.level]
+        self.eat_green = self.green_count[Whale.level]
+        self.eat_tuna = self.tuna_count[Whale.level]
+
 class Back:
     def __init__(self):
         self.image = load_image('Resources//back.png')
