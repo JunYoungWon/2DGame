@@ -29,18 +29,18 @@ tuna_count = [0, 0, 0, 0, 0, 0, 0, 0, 3, 5]
 
 
 
+
+
+
 class Whale:
 
-    PIXEL_PER_METER = (10.0 / 0.3)  #10 pixel 30cm
-    RUN_SPEED_KMPH = 20.0   #km / hour
+    PIXEL_PER_METER = (10.0 / 0.1)  #10 pixel 30cm
+    RUN_SPEED_KMPH = 1.0   #km / hour
     RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 10.0)
     RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
     RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-    speed = [21, 19, 17, 15, 13, 11, 9, 7, 5, 3]
     UP, DOWN, LEFT, RIGHT, STOP = 0, 1, 2, 3, 4
-
-    image_right = None
 
     def __init__(self):
         self.x, self.y = 400, 300
@@ -88,6 +88,7 @@ class Whale:
         self.state = Whale.STOP
         self.dir = True
         self.hp = 220
+        self.distance = 0
         self.eat_yellow = yellow_count[self.level]
         self.eat_gold = gold_count[self.level]
         self.eat_green = green_count[self.level]
@@ -96,17 +97,21 @@ class Whale:
         self.eat_sound = load_music('Sound//eat.mp3')
         self.eat_sound.set_volume(100)
 
+        self.current_time = get_time()
+        self.frame_time = get_time() + self.current_time
+
 
     def update(self):
-        # distance = Whale.speed[self.level]
+        # self.distance = 20 * self.frame_time
+        self.distance = self.RUN_SPEED_PPS * self.frame_time
         if self.state == Whale.UP and self.y < 580: #up
-            self.y += 5
+            self.y += self.distance
         elif self.state == Whale.DOWN and self.y > 20: #down
-            self.y -= 5
+            self.y -= self.distance
         elif self.state == Whale.RIGHT and self.x < 750: #right
-            self.x += 5
+            self.x += self.distance
         elif self.state == Whale.LEFT and self.x > 50: #left
-            self.x -= 5
+            self.x -= self.distance
 
     def draw(self):
         if self.dir == True:
@@ -130,9 +135,6 @@ class Whale:
 
     def level_up(self):
         self.level += 1
-        # print("level up")
-        self.level_up_image.draw(self.x, self.y + 50)
-
         self.eat_yellow = yellow_count[self.level]
         self.eat_gold = gold_count[self.level]
         self.eat_green = green_count[self.level]
@@ -141,11 +143,13 @@ class Whale:
         if self.level >= 10:
             game_framework.change_state(title_state)
 
+        self.level_ui()
+
+    def level_ui(self):
+        print("level up")
+        self.level_up_image.draw(self.x - (self.level + 1) * 10 + 150, self.y - (self.level + 1) * 8 + 50)
+
     def ui_draw(self):
-        # self.x = 0
-        #self.life_bar_image.draw(190, 560)
-        # self.life_bar_image.clip_draw(0,0,220,190,560)
-        # self.image_right.clip_draw(self.frame*40, 0, 40, 25, self.x, self.y)
         self.life_bar_image.clip_draw(0, 0, self.hp, 30, self.hp/2 + 80, 560)
 
         if self.eat_yellow != 0:
@@ -388,10 +392,11 @@ def collide(a, b):
     return True
 
 def update():
+    # current_time = get_time()
+    whale.frame_time = get_time() - whale.current_time
+    whale.current_time += whale.frame_time
     whale.update()
 
-    # print(whale.hp)
-    # print(whale.eat_yellow, whale.eat_gold, whale.eat_green, whale.eat_tuna )
     if whale.eat_yellow == 0 and whale.eat_gold == 0 and whale.eat_green == 0 and whale.eat_tuna == 0:
             whale.level_up()
 
