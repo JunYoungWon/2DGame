@@ -14,6 +14,7 @@ def enter():
     image = load_image('Resources//kpu_credit.png')
 
 
+
 def exit():
     global image
     del(image)
