@@ -144,7 +144,7 @@ class Whale:
         self.eat_tuna = tuna_count[self.level]
 
         if self.level >= 10:
-            game_framework.change_state(title_state)
+            game_framework.push_state(title_state)
         self.level_upgrade = True
         self.level_up_draw()
 
@@ -411,7 +411,7 @@ def update():
             whale.level_up()
 
     if whale.hp <= 0:
-        game_framework.change_state(title_state)
+        game_framework.push_state(title_state)
 
     if whale.level >= 0:
         for i in yellowfish:
@@ -471,7 +471,7 @@ def update():
         for i in shark:
             i.update()
             if collide(whale, i):
-                game_framework.change_state('title_state')
+                game_framework.push_state(title_state)
 
 
 
