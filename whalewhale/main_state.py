@@ -94,6 +94,9 @@ class Whale:
         self.eat_green = green_count[self.level]
         self.eat_tuna = tuna_count[self.level]
 
+        self.level_upgrade = False
+        self.level_up_time = 20
+
         self.eat_sound = load_music('Sound//eat.mp3')
         self.eat_sound.set_volume(100)
 
@@ -103,7 +106,7 @@ class Whale:
 
     def update(self):
         # self.distance = 20 * self.frame_time
-        self.distance = self.RUN_SPEED_PPS * self.frame_time
+        self.distance = 1 * self.current_time
         if self.state == Whale.UP and self.y < 580: #up
             self.y += self.distance
         elif self.state == Whale.DOWN and self.y > 20: #down
@@ -142,12 +145,16 @@ class Whale:
 
         if self.level >= 10:
             game_framework.change_state(title_state)
+        self.level_upgrade = True
+        self.level_up_draw()
 
-        self.level_ui()
-
-    def level_ui(self):
-        print("level up")
-        self.level_up_image.draw(self.x - (self.level + 1) * 10 + 150, self.y - (self.level + 1) * 8 + 50)
+    def level_up_draw(self):
+        if self.level_up_time >= 1:
+            self.level_up_time -= 1
+            self.level_up_image.draw(self.x  , self.y - (self.level + 1) * 8 - 20)
+        else:
+            self.level_up_time = 20
+            self.level_upgrade = False
 
     def ui_draw(self):
         self.life_bar_image.clip_draw(0, 0, self.hp, 30, self.hp/2 + 80, 560)
@@ -395,6 +402,9 @@ def update():
     # current_time = get_time()
     whale.frame_time = get_time() - whale.current_time
     whale.current_time += whale.frame_time
+    # whale.current_time = get_time()
+    # print(whale.frame_time, whale.current_time)
+    print(whale.current_time)
     whale.update()
 
     if whale.eat_yellow == 0 and whale.eat_gold == 0 and whale.eat_green == 0 and whale.eat_tuna == 0:
@@ -473,6 +483,8 @@ def draw():
     back.draw()
     whale.ui_draw()
 
+
+
     if whale.level >= 0:
         for i in yellowfish:
             i.draw()
@@ -498,8 +510,13 @@ def draw():
             i.draw()
             i.draw_bb()
 
+
+
     whale.draw()
     whale.draw_bb()
+
+    if whale.level_upgrade == True:
+        whale.level_up_draw()
 
     update_canvas()
     delay(0.05)
