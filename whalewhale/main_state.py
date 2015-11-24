@@ -86,6 +86,7 @@ class Whale:
 
         self.level = 0
         self.state = Whale.STOP
+        self.TempState =Whale.STOP
         self.dir = True
         self.hp = 220
         self.distance = 0
@@ -102,11 +103,24 @@ class Whale:
 
         self.current_time = get_time()
         self.frame_time = get_time() + self.current_time
-
+        self.test = 1
+        self.test1 = 0
 
     def update(self):
+        self.test1 += self.frame_time
+        if self.test1 > 0.7 :
+            self.hp -=1
+            self.test1 = 0
+        if self.state == Whale.STOP:
+            return
         # self.distance = 20 * self.frame_time
-        self.distance = 1 * self.current_time
+        if self.state != self.TempState:
+            self.test = 1
+            self.TempState = Whale.STOP
+        self.test += self.frame_time
+        self.distance = 3 * self.test
+        # print(self.test)
+
         if self.state == Whale.UP and self.y < 580: #up
             self.y += self.distance
         elif self.state == Whale.DOWN and self.y > 20: #down
@@ -138,6 +152,8 @@ class Whale:
 
     def level_up(self):
         self.level += 1
+        # if whale.hp <= 220:
+        #     self.hp += 20
         self.eat_yellow = yellow_count[self.level]
         self.eat_gold = gold_count[self.level]
         self.eat_green = green_count[self.level]
@@ -177,25 +193,47 @@ class Whale:
 class YellowFish:
     def __init__(self):
         self.dir = random.randint(0,1)
-        self.x, self.y = 800 * self.dir, random.randint(100,600)
+        if self.dir == 0:
+            self.x = random.randint(-700,-100)
+        if self.dir == 1:
+            self.x = random.randint(900,1500)
+
+        self.y = random.randint(100,600)
         self.frame = 0
         self.image_right = load_image('Resources//Ryellowfish.png')
         self.image_left = load_image('Resources//Lyellowfish.png')
-        self.speed = random.randint(3,5)
+        self.speed = random.randint(1,3)
+        self.state = False
 
     def update(self):
+        if self.state == False:
+               pass
         self.frame = (self.frame + 1) % 6
         if self.dir == 0:
             self.x += self.speed
         else:
             self.x -= self.speed
 
-        if self.dir == 0 and self.x > 800:
-            self.dir = 1
-        elif self.dir == 1 and self.x < 0:
-            self.dir = 0
+        if self.dir == 0 and self.x > 900:
+            # self.dir = 1
+            self.reset()
+        elif self.dir == 1 and self.x < -100:
+            # self.dir = 0
+            self.reset()
+
+    def reset(self):
+        self.dir = random.randint(0,1)
+        if self.dir == 0:
+            self.x = random.randint(-700,-100)
+        if self.dir == 1:
+            self.x = random.randint(900,1500)
+        self.y = random.randint(100,600)
+        self.frame = 0
+        self.speed = random.randint(1,3)
 
     def draw(self):
+        if self.state == False:
+               pass
         if self.dir == 0:
             self.image_right.clip_draw(self.frame*40, 0, 40, 25, self.x, self.y)
         else:
@@ -210,25 +248,47 @@ class YellowFish:
 class GoldFish:
     def __init__(self):
         self.dir = random.randint(0,1)
-        self.x, self.y = 800 * self.dir, random.randint(100,600)
+        if self.dir == 0:
+            self.x = random.randint(-700,-100)
+        if self.dir == 1:
+            self.x = random.randint(900,1500)
+
+        self.y = random.randint(100,600)
         self.frame = 0
         self.image_right = load_image('Resources//Rgoldfish.png')
         self.image_left = load_image('Resources//Lgoldfish.png')
-        self.speed = random.randint(3,6)
+        self.speed = random.randint(1,3)
+        self.state = False
 
     def update(self):
+        if self.state == False:
+               pass
         self.frame = (self.frame + 1) % 6
         if self.dir == 0:
             self.x += self.speed
         else:
             self.x -= self.speed
 
-        if self.dir == 0 and self.x > 800:
-            self.dir = 1
-        elif self.dir == 1 and self.x < 0:
-            self.dir = 0
+        if self.dir == 0 and self.x > 900:
+            # self.dir = 1
+            self.reset()
+        elif self.dir == 1 and self.x < -100:
+            # self.dir = 0
+            self.reset()
+
+    def reset(self):
+        self.dir = random.randint(0,1)
+        if self.dir == 0:
+            self.x = random.randint(-700,-100)
+        if self.dir == 1:
+            self.x = random.randint(900,1500)
+        self.y = random.randint(100,600)
+        self.frame = 0
+        self.speed = random.randint(1,3)
 
     def draw(self):
+        if self.state == False:
+               pass
         if self.dir == 0:
             self.image_right.clip_draw(self.frame*80, 0, 80, 60, self.x, self.y)
         else:
@@ -243,25 +303,47 @@ class GoldFish:
 class GreenFish:
     def __init__(self):
         self.dir = random.randint(0,1)
-        self.x, self.y = 800 * self.dir, random.randint(100,600)
+        if self.dir == 0:
+            self.x = random.randint(-700,-100)
+        if self.dir == 1:
+            self.x = random.randint(900,1500)
+
+        self.y = random.randint(100,600)
         self.frame = 0
         self.image_right = load_image('Resources//Rgreenfish.png')
         self.image_left = load_image('Resources//Lgreenfish.png')
-        self.speed = random.randint(2,5)
+        self.speed = random.randint(2,4)
+        self.state = False
 
     def update(self):
+        if self.state == False:
+               pass
         self.frame = (self.frame + 1) % 6
         if self.dir == 0:
             self.x += self.speed
         else:
             self.x -= self.speed
 
-        if self.dir == 0 and self.x > 800:
-            self.dir = 1
-        elif self.dir == 1 and self.x < 0:
-            self.dir = 0
+        if self.dir == 0 and self.x > 900:
+            # self.dir = 1
+            self.reset()
+        elif self.dir == 1 and self.x < -100:
+            # self.dir = 0
+            self.reset()
+
+    def reset(self):
+        self.dir = random.randint(0,1)
+        if self.dir == 0:
+            self.x = random.randint(-700,-100)
+        if self.dir == 1:
+            self.x = random.randint(900,1500)
+        self.y = random.randint(100,600)
+        self.frame = 0
+        self.speed = random.randint(1,3)
 
     def draw(self):
+        if self.state == False:
+               pass
         if self.dir == 0:
             self.image_right.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
         else:
@@ -276,25 +358,47 @@ class GreenFish:
 class Tuna:
     def __init__(self):
         self.dir = random.randint(0,1)
-        self.x, self.y = 800 * self.dir, random.randint(100,600)
+        if self.dir == 0:
+            self.x = random.randint(-700,-100)
+        if self.dir == 1:
+            self.x = random.randint(900,1500)
+
+        self.y = random.randint(100,600)
         self.frame = 0
         self.image_right = load_image('Resources//Rtuna.png')
         self.image_left = load_image('Resources//Ltuna.png')
-        self.speed = random.randint(3,6)
+        self.speed = random.randint(2,4)
+        self.state = False
 
     def update(self):
+        if self.state == False:
+               pass
         self.frame = (self.frame + 1) % 8
         if self.dir == 0:
             self.x += self.speed
         else:
             self.x -= self.speed
 
-        if self.dir == 0 and self.x > 800:
-            self.dir = 1
-        elif self.dir == 1 and self.x < 0:
-            self.dir = 0
+        if self.dir == 0 and self.x > 900:
+            # self.dir = 1
+            self.reset()
+        elif self.dir == 1 and self.x < -100:
+            # self.dir = 0
+            self.reset()
+
+    def reset(self):
+        self.dir = random.randint(0,1)
+        if self.dir == 0:
+            self.x = random.randint(-700,-100)
+        if self.dir == 1:
+            self.x = random.randint(900,1500)
+        self.y = random.randint(100,600)
+        self.frame = 0
+        self.speed = random.randint(1,3)
 
     def draw(self):
+        if self.state == False:
+               pass
         if self.dir == 0:
             self.image_right.clip_draw(self.frame*150, 0, 150, 90, self.x, self.y)
         else:
@@ -309,22 +413,44 @@ class Tuna:
 class Shark:
     def __init__(self):
         self.dir = random.randint(0,1)
-        self.x, self.y = 800 * self.dir, random.randint(100,600)
+        if self.dir == 0:
+            self.x = random.randint(-700,-100)
+        if self.dir == 1:
+            self.x = random.randint(900,1500)
+
+        self.y = random.randint(100,600)
         self.image_right = load_image('Resources//Rshark.png')
         self.image_left = load_image('Resources//Lshark.png')
+        self.state = False
+
+    def reset(self):
+        self.dir = random.randint(0,1)
+        if self.dir == 0:
+            self.x = random.randint(-700,-100)
+        if self.dir == 1:
+            self.x = random.randint(900,1500)
+        self.y = random.randint(100,600)
+        self.frame = 0
+        self.speed = random.randint(1,3)
 
     def update(self):
+        if self.state == False:
+               pass
         if self.dir == 0:
             self.x += 2
         else:
             self.x -= 2
 
         if self.dir == 0 and self.x > 800:
-            self.dir = 1
+            # self.dir = 1
+            self.reset()
         elif self.dir == 1 and self.x < 0:
-            self.dir = 0
+            # self.dir = 0
+            self.reset()
 
     def draw(self):
+        if self.state == False:
+               pass
         if self.dir == 0:
             self.image_right.draw(self.x, self.y)
         else:
@@ -343,11 +469,11 @@ def enter():
     whale = Whale()
     back = Back()
 
-    yellowfish = [YellowFish() for i in range(20)]
+    yellowfish = [YellowFish() for i in range(10)]
     goldfish = [GoldFish() for i in range(7)]
     greenfish = [GreenFish() for i in range(7)]
     tuna = [Tuna() for i in range(7)]
-    shark = [Shark() for i in range(3)]
+    shark = [Shark() for i in range(5)]
 
 
 
@@ -369,17 +495,22 @@ def handle_events():
         if event.type == SDL_QUIT:
             running = False
         elif event.type == SDL_KEYDOWN:
+            whale.TempState = whale.state
             if event.key == SDLK_ESCAPE:
                running = False
                game_framework.change_state(title_state)
             if event.key == SDLK_UP:
+
                 whale.state = Whale.UP
             if event.key == SDLK_DOWN:
+
                 whale.state = Whale.DOWN
             if event.key == SDLK_RIGHT:
+
                 whale.state = Whale.RIGHT
                 whale.dir = True
             if event.key == SDLK_LEFT:
+
                 whale.state = Whale.LEFT
                 whale.dir = False
             if event.key == SDLK_SPACE:
@@ -399,16 +530,16 @@ def collide(a, b):
     return True
 
 def update():
-    # current_time = get_time()
     whale.frame_time = get_time() - whale.current_time
     whale.current_time += whale.frame_time
-    # whale.current_time = get_time()
-    # print(whale.frame_time, whale.current_time)
-    print(whale.current_time)
+
     whale.update()
 
     if whale.eat_yellow == 0 and whale.eat_gold == 0 and whale.eat_green == 0 and whale.eat_tuna == 0:
             whale.level_up()
+
+
+
 
     if whale.hp <= 0:
         game_framework.push_state(title_state)
@@ -417,19 +548,21 @@ def update():
         for i in yellowfish:
             i.update()
             if collide(whale, i):
-                yellowfish.remove(i)
-                # whale.eat()
+                i.reset()
                 if whale.eat_yellow > 0:
                     whale.eat_yellow -= 1
                 if whale.hp < 220:
                     whale.hp += 1
+
+                # whale.eat()
+
 
     if whale.level >= 1:
         for i in goldfish:
             i.update()
             if collide(whale, i):
                 if whale.level >= 3:
-                    goldfish.remove(i)
+                    i.reset()
                     # whale.eat()
                     if whale.eat_gold > 0:
                         whale.eat_gold -= 1
@@ -443,7 +576,7 @@ def update():
             i.update()
             if collide(whale, i):
                 if whale.level >= 6:
-                    greenfish.remove(i)
+                    i.reset()
                     # whale.eat()
                     if whale.eat_green > 0:
                         whale.eat_green -= 1
@@ -458,7 +591,7 @@ def update():
             i.update()
             if collide(whale, i):
                 if whale.level >= 8:
-                    tuna.remove(i)
+                    i.reset()
                     # whale.eat()
                     if whale.eat_tuna > 0:
                         whale.eat_tuna -= 1
@@ -489,6 +622,7 @@ def draw():
         for i in yellowfish:
             i.draw()
             i.draw_bb()
+
 
     if whale.level >= 1:
         for i in goldfish:
