@@ -340,7 +340,7 @@ def enter():
     goldfish = [GoldFish() for i in range(7)]
     greenfish = [GreenFish() for i in range(7)]
     tuna = [Tuna() for i in range(7)]
-    shark = [Shark() for i in range(5)]
+    shark = [Shark() for i in range(3)]
 
 
 
