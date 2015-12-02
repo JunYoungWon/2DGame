@@ -68,7 +68,8 @@ class Whale:
                             load_image('Resources//10L.png')]
         self.level_up_image = load_image('Resources//level_up.png')
         self.life_bar_image = load_image('Resources//life_bar.png')
-        self.mission_count_image = [load_image('Resources//mission_count_1.png'),
+        self.mission_count_image = [load_image('Resources//mission_count_0.png'),
+                                    load_image('Resources//mission_count_1.png'),
                                     load_image('Resources//mission_count_2.png'),
                                     load_image('Resources//mission_count_3.png'),
                                     load_image('Resources//mission_count_4.png'),
@@ -118,7 +119,7 @@ class Whale:
             self.test = 1
             self.TempState = Whale.STOP
         self.test += self.frame_time
-        self.distance = 3 * self.test
+        self.distance = 5 * self.test
         # print(self.test)
 
         if self.state == Whale.UP and self.y < 580: #up
@@ -175,14 +176,14 @@ class Whale:
     def ui_draw(self):
         self.life_bar_image.clip_draw(0, 0, self.hp, 30, self.hp/2 + 80, 560)
 
-        if self.eat_yellow != 0:
-            self.mission_count_image[self.eat_yellow-1].draw(250, 20)
-        if self.eat_gold != 0:
-            self.mission_count_image[self.eat_gold-1].draw(320, 20)
-        if self.eat_green != 0:
-            self.mission_count_image[self.eat_green-1].draw(416, 20)
-        if self.eat_tuna != 0:
-            self.mission_count_image[self.eat_tuna-1].draw(519, 20)
+
+        self.mission_count_image[self.eat_yellow].draw(250, 20)
+        if self.level >= 3:
+            self.mission_count_image[self.eat_gold].draw(320, 20)
+        if self.level >= 6:
+            self.mission_count_image[self.eat_green].draw(416, 20)
+        if self.level >= 8:
+            self.mission_count_image[self.eat_tuna].draw(519, 20)
 
         self.level_count_image[self.level].draw(150,70)
 
@@ -379,10 +380,10 @@ class Tuna:
         else:
             self.x -= self.speed
 
-        if self.dir == 0 and self.x > 900:
+        if self.dir == 0 and self.x > 950:
             # self.dir = 1
             self.reset()
-        elif self.dir == 1 and self.x < -100:
+        elif self.dir == 1 and self.x < -150:
             # self.dir = 0
             self.reset()
 
@@ -422,6 +423,7 @@ class Shark:
         self.image_right = load_image('Resources//Rshark.png')
         self.image_left = load_image('Resources//Lshark.png')
         self.state = False
+        self.speed = random.randint(3,7)
 
     def reset(self):
         self.dir = random.randint(0,1)
@@ -431,20 +433,20 @@ class Shark:
             self.x = random.randint(900,1500)
         self.y = random.randint(100,600)
         self.frame = 0
-        self.speed = random.randint(1,3)
+        self.speed = random.randint(3,7)
 
     def update(self):
         if self.state == False:
                pass
         if self.dir == 0:
-            self.x += 2
+            self.x += self.speed
         else:
-            self.x -= 2
+            self.x -= self.speed
 
-        if self.dir == 0 and self.x > 800:
+        if self.dir == 0 and self.x > 950:
             # self.dir = 1
             self.reset()
-        elif self.dir == 1 and self.x < 0:
+        elif self.dir == 1 and self.x < -150:
             # self.dir = 0
             self.reset()
 
@@ -469,11 +471,11 @@ def enter():
     whale = Whale()
     back = Back()
 
-    yellowfish = [YellowFish() for i in range(10)]
-    goldfish = [GoldFish() for i in range(7)]
-    greenfish = [GreenFish() for i in range(7)]
-    tuna = [Tuna() for i in range(7)]
-    shark = [Shark() for i in range(5)]
+    yellowfish = [YellowFish() for i in range(15)]
+    goldfish = [GoldFish() for i in range(8)]
+    greenfish = [GreenFish() for i in range(8)]
+    tuna = [Tuna() for i in range(5)]
+    shark = [Shark() for i in range(3)]
 
 
 
