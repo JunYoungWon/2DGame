@@ -6,6 +6,8 @@ from pico2d import *
 
 import game_framework
 import title_state
+import gameclear_state
+import gameover_state
 from main_state_back import Back
 
 name = "MainState"
@@ -161,7 +163,7 @@ class Whale:
         self.eat_tuna = tuna_count[self.level]
 
         if self.level >= 10:
-            game_framework.push_state(title_state)
+            game_framework.change_state(gameclear_state)
         self.level_upgrade = True
         self.level_up_draw()
 
@@ -544,7 +546,7 @@ def update():
 
 
     if whale.hp <= 0:
-        game_framework.push_state(title_state)
+        game_framework.push_state(gameover_state)
 
     if whale.level >= 0:
         for i in yellowfish:
@@ -606,7 +608,7 @@ def update():
         for i in shark:
             i.update()
             if collide(whale, i):
-                game_framework.push_state(title_state)
+                game_framework.push_state(gameover_state)
 
 
 
