@@ -14,6 +14,7 @@ name = "MainState"
 
 move = True
 
+item = None
 whale = None
 back = None
 yellowfish = None
@@ -70,6 +71,7 @@ class Whale:
                             load_image('Resources//10L.png')]
         self.level_up_image = load_image('Resources//level_up.png')
         self.life_bar_image = load_image('Resources//life_bar.png')
+
         self.mission_count_image = [load_image('Resources//mission_count_0.png'),
                                     load_image('Resources//mission_count_1.png'),
                                     load_image('Resources//mission_count_2.png'),
@@ -109,7 +111,10 @@ class Whale:
         self.test = 1
         self.test1 = 0
 
+
+
     def update(self):
+
         self.test1 += self.frame_time
         if self.test1 > 0.7 :
             self.hp -=1
@@ -148,12 +153,19 @@ class Whale:
             return self.x - (self.level + 1) * 10, self.y - (self.level + 1) * 8,\
                    self.x + (self.level + 1) * 10, self.y + (self.level + 1) * 7
 
-
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
 
 
     def level_up(self):
+        if self.level >= 10:
+            game_framework.change_state(gameclear_state)
+        self.level_upgrade = True
+        self.level_up_draw()
+
+        print("item!")
+        item.show = True
+
         self.level += 1
         # if whale.hp <= 220:
         #     self.hp += 20
@@ -162,10 +174,7 @@ class Whale:
         self.eat_green = green_count[self.level]
         self.eat_tuna = tuna_count[self.level]
 
-        if self.level >= 10:
-            game_framework.change_state(gameclear_state)
-        self.level_upgrade = True
-        self.level_up_draw()
+
 
     def level_up_draw(self):
         if self.level_up_time >= 1:
@@ -177,7 +186,6 @@ class Whale:
 
     def ui_draw(self):
         self.life_bar_image.clip_draw(0, 0, self.hp, 30, self.hp/2 + 80, 560)
-
 
         self.mission_count_image[self.eat_yellow].draw(250, 20)
         if self.level >= 3:
@@ -191,6 +199,35 @@ class Whale:
 
     def eat(self):
         self.eat_sound.play()
+
+class Item:
+    def __init__(self):
+        self.show = False
+        self.x = random.randint(100,700)
+        self.y = -200
+        self.item_image = load_image('Resources//item.png')
+
+    def update(self):
+        if self.show == True:
+            self.y += 3
+            if self.y > 710:
+                self.show = False
+
+    def draw(self):
+        if self.show == True:
+            self.item_image.draw(self.x, self.y)
+
+    def get_bb(self):
+        return self.x - 32, self.y - 32, self.x + 32, self.y + 32
+
+    def draw_bb(self):
+        if self.show == True:
+            draw_rectangle(*self.get_bb())
+
+    def reset(self):
+        self.show = False
+        self.x = random.randint(100,700)
+        self.y = -200
 
 
 class YellowFish:
@@ -468,10 +505,11 @@ class Shark:
 
 
 def enter():
-    global whale, back, yellowfish, goldfish, greenfish, tuna, shark
+    global whale, back, yellowfish, goldfish, greenfish, tuna, shark, item
 
     whale = Whale()
     back = Back()
+    item = Item()
 
     yellowfish = [YellowFish() for i in range(15)]
     goldfish = [GoldFish() for i in range(8)]
@@ -542,8 +580,10 @@ def update():
     if whale.eat_yellow == 0 and whale.eat_gold == 0 and whale.eat_green == 0 and whale.eat_tuna == 0:
             whale.level_up()
 
-
-
+    if item.show == True:
+        item.update()
+        if collide(whale, item):
+            item.reset()
 
     if whale.hp <= 0:
         game_framework.push_state(gameover_state)
@@ -610,17 +650,12 @@ def update():
             if collide(whale, i):
                 game_framework.push_state(gameover_state)
 
-
-
-
-
-
 def draw():
     clear_canvas()
     back.draw()
     whale.ui_draw()
-
-
+    item.draw()
+    item.draw_bb()
 
     if whale.level >= 0:
         for i in yellowfish:
