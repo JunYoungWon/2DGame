@@ -5,11 +5,21 @@ from pico2d import *
 
 name = "TitleState"
 image = None
+bgm = None
+start = None
 
 
 def enter():
-    global  image
+    global  image, bgm
     image = load_image('Resources//title.png')
+
+    bgm = load_music('Sound//under the sea.mp3')
+    bgm.set_volume(64)
+    bgm.repeat_play()
+
+    # start = load_music('Sound//under the sea.mp3')
+    # start.set_volume(64)
+    # start.play()
 
 
 def exit():

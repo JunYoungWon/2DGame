@@ -103,8 +103,15 @@ class Whale:
         self.level_upgrade = False
         self.level_up_time = 20
 
-        self.eat_sound = load_music('Sound//eat.mp3')
+        self.eat_sound = load_music('Sound//eat.wav')
         self.eat_sound.set_volume(100)
+        self.coll_sound = load_music('Sound//eat.wav')
+        self.coll_sound.set_volume(100)
+        self.levelup_sound = load_music('Sound//eat.wav')
+        self.levelup_sound.set_volume(100)
+        self.item_sound = load_music('Sound//eat.wav')
+        self.item_sound.set_volume(100)
+
 
         self.current_time = get_time()
         self.frame_time = get_time() + self.current_time
@@ -176,7 +183,7 @@ class Whale:
         if self.level >= 3:
             print("item")
             item.show = True
-
+        self.levelup_sound.play()
         self.level += 1
         # if whale.hp <= 220:
         #     self.hp += 20
@@ -594,6 +601,7 @@ def update():
     if item.show == True:
         item.update()
         if collide(whale, item):
+            whale.item_sound.play()
             item.reset()
             whale.item_eat = True
 
@@ -612,12 +620,12 @@ def update():
             i.update()
             if collide(whale, i):
                 i.reset()
+                whale.eat()
                 if whale.eat_yellow > 0:
                     whale.eat_yellow -= 1
                 if whale.hp < 220:
                     whale.hp += 1
 
-                # whale.eat()
 
 
     if whale.level >= 1:
@@ -626,14 +634,14 @@ def update():
             if collide(whale, i):
                 if whale.level >= 3:
                     i.reset()
-                    # whale.eat()
+                    whale.eat()
                     if whale.eat_gold > 0:
                         whale.eat_gold -= 1
                     if whale.hp < 220:
                         whale.hp += 2
                 elif whale.item_eat == False:
-
                     whale.hp -= 10
+                    whale.coll_sound.play()
 
     if whale.level >= 3:
         for i in greenfish:
@@ -641,13 +649,14 @@ def update():
             if collide(whale, i):
                 if whale.level >= 6:
                     i.reset()
-                    # whale.eat()
+                    whale.eat()
                     if whale.eat_green > 0:
                         whale.eat_green -= 1
                     if whale.hp < 220:
                         whale.hp += 2
                 elif whale.item_eat == False:
                     whale.hp -= 15
+                    whale.coll_sound.play()
 
 
     if whale.level >= 6:
@@ -656,13 +665,14 @@ def update():
             if collide(whale, i):
                 if whale.level >= 8:
                     i.reset()
-                    # whale.eat()
+                    whale.eat()
                     if whale.eat_tuna > 0:
                         whale.eat_tuna -= 1
                     if whale.hp < 220:
                         whale.hp += 3
                 elif whale.item_eat == False:
                     whale.hp -= 20
+                    whale.coll_sound.play()
 
     if whale.level >= 8:
         for i in shark:
@@ -670,6 +680,7 @@ def update():
             if collide(whale, i):
                 if whale.item_eat == False:
                     game_framework.push_state(gameover_state)
+                    whale.coll_sound.play()
 
 def draw():
     clear_canvas()
