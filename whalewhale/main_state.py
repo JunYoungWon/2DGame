@@ -71,7 +71,7 @@ class Whale:
                             load_image('Resources//10L.png')]
         self.level_up_image = load_image('Resources//level_up.png')
         self.life_bar_image = load_image('Resources//life_bar.png')
-
+        self.item_eat_image = load_image('Resources//item_eat.png')
         self.mission_count_image = [load_image('Resources//mission_count_0.png'),
                                     load_image('Resources//mission_count_1.png'),
                                     load_image('Resources//mission_count_2.png'),
@@ -111,6 +111,8 @@ class Whale:
         self.test = 1
         self.test1 = 0
 
+        self.item_eat = False
+        self.item_time = 100
 
 
     def update(self):
@@ -138,11 +140,18 @@ class Whale:
         elif self.state == Whale.LEFT and self.x > 50: #left
             self.x -= self.distance
 
+
+
     def draw(self):
         if self.dir == True:
             self.image_right[self.level].draw(self.x, self.y)
         else:
             self.image_left[self.level].draw(self.x, self.y)
+
+        if self.item_eat == True:
+            self.item_eat_image.clip_draw(self.level*25, 0, self.level*25,  self.level*27, self.x, self.y)
+            # self.item_eat_image.draw(self.x, self.y)
+            pass
 
     def get_bb(self):
         if self.level == 0 or self.level == 1:
@@ -163,8 +172,10 @@ class Whale:
         self.level_upgrade = True
         self.level_up_draw()
 
-        print("item!")
-        item.show = True
+
+        if self.level >= 3:
+            print("item")
+            item.show = True
 
         self.level += 1
         # if whale.hp <= 220:
@@ -584,6 +595,14 @@ def update():
         item.update()
         if collide(whale, item):
             item.reset()
+            whale.item_eat = True
+
+    if whale.item_eat == True:
+        if whale.item_time >= 1:
+            whale.item_time -= 1
+        else:
+            whale.item_time = 100
+            whale.item_eat = False
 
     if whale.hp <= 0:
         game_framework.push_state(gameover_state)
@@ -612,8 +631,9 @@ def update():
                         whale.eat_gold -= 1
                     if whale.hp < 220:
                         whale.hp += 2
-                else:
-                    whale.hp -= 3
+                elif whale.item_eat == False:
+
+                    whale.hp -= 10
 
     if whale.level >= 3:
         for i in greenfish:
@@ -626,8 +646,8 @@ def update():
                         whale.eat_green -= 1
                     if whale.hp < 220:
                         whale.hp += 2
-                else:
-                    whale.hp -= 4
+                elif whale.item_eat == False:
+                    whale.hp -= 15
 
 
     if whale.level >= 6:
@@ -641,52 +661,53 @@ def update():
                         whale.eat_tuna -= 1
                     if whale.hp < 220:
                         whale.hp += 3
-                else:
-                    whale.hp -= 5
+                elif whale.item_eat == False:
+                    whale.hp -= 20
 
     if whale.level >= 8:
         for i in shark:
             i.update()
             if collide(whale, i):
-                game_framework.push_state(gameover_state)
+                if whale.item_eat == False:
+                    game_framework.push_state(gameover_state)
 
 def draw():
     clear_canvas()
     back.draw()
     whale.ui_draw()
     item.draw()
-    item.draw_bb()
+    # item.draw_bb()
 
     if whale.level >= 0:
         for i in yellowfish:
             i.draw()
-            i.draw_bb()
+            # i.draw_bb()
 
 
     if whale.level >= 1:
         for i in goldfish:
             i.draw()
-            i.draw_bb()
+            # i.draw_bb()
 
     if whale.level >= 3:
         for i in greenfish:
             i.draw()
-            i.draw_bb()
+            # i.draw_bb()
 
     if whale.level >= 6:
         for i in tuna:
             i.draw()
-            i.draw_bb()
+            # i.draw_bb()
 
     if whale.level >= 8:
         for i in shark:
             i.draw()
-            i.draw_bb()
+            # i.draw_bb()
 
 
 
     whale.draw()
-    whale.draw_bb()
+    # whale.draw_bb()
 
     if whale.level_upgrade == True:
         whale.level_up_draw()
