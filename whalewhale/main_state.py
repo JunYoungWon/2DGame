@@ -103,14 +103,14 @@ class Whale:
         self.level_upgrade = False
         self.level_up_time = 20
 
-        self.eat_sound = load_music('Sound//eat.wav')
-        self.eat_sound.set_volume(100)
-        self.coll_sound = load_music('Sound//eat.wav')
-        self.coll_sound.set_volume(100)
-        self.levelup_sound = load_music('Sound//eat.wav')
-        self.levelup_sound.set_volume(100)
-        self.item_sound = load_music('Sound//eat.wav')
-        self.item_sound.set_volume(100)
+        self.eat_sound = load_wav('Sound//eat.wav')
+        self.eat_sound.set_volume(90)
+        self.coll_sound = load_wav('Sound//coll_.wav')
+        self.coll_sound.set_volume(30)
+        self.levelup_sound = load_wav('Sound//levelup.wav')
+        self.levelup_sound.set_volume(200)
+        self.item_sound = load_wav('Sound//item.wav')
+        self.item_sound.set_volume(200)
 
 
         self.current_time = get_time()

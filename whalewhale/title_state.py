@@ -13,8 +13,8 @@ def enter():
     global  image, bgm
     image = load_image('Resources//title.png')
 
-    bgm = load_music('Sound//under the sea.mp3')
-    bgm.set_volume(64)
+    bgm = load_wav('Sound//under the sea.ogg')
+    bgm.set_volume(150)
     bgm.repeat_play()
 
     # start = load_music('Sound//under the sea.mp3')
