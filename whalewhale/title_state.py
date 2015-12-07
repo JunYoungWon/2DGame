@@ -17,7 +17,7 @@ def enter():
     bgm.set_volume(150)
     bgm.repeat_play()
 
-    # start = load_music('Sound//under the sea.mp3')
+    # start = load_wav('Sound//eat.wav')
     # start.set_volume(64)
     # start.play()
 
@@ -37,6 +37,7 @@ def handle_events():
                 game_framework.quit()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
                 game_framework.change_state(main_state)
+
 
 
 

@@ -29,12 +29,6 @@ gold_count = [0, 0, 0, 3, 4, 5, 3, 4, 4, 5]
 green_count = [0, 0, 0, 0, 0, 0, 3, 3, 3, 5]
 tuna_count = [0, 0, 0, 0, 0, 0, 0, 0, 3, 5]
 
-
-
-
-
-
-
 class Whale:
 
     PIXEL_PER_METER = (10.0 / 0.1)  #10 pixel 30cm
@@ -247,7 +241,6 @@ class Item:
         self.x = random.randint(100,700)
         self.y = -200
 
-
 class YellowFish:
     def __init__(self):
         self.dir = random.randint(0,1)
@@ -255,17 +248,15 @@ class YellowFish:
             self.x = random.randint(-700,-100)
         if self.dir == 1:
             self.x = random.randint(900,1500)
-
         self.y = random.randint(100,600)
         self.frame = 0
         self.image_right = load_image('Resources//Ryellowfish.png')
         self.image_left = load_image('Resources//Lyellowfish.png')
         self.speed = random.randint(1,3)
-        self.state = False
+        self.rand_ai = random.randint(0,1)
+        self.ai = False
 
     def update(self):
-        if self.state == False:
-               pass
         self.frame = (self.frame + 1) % 6
         if self.dir == 0:
             self.x += self.speed
@@ -273,13 +264,24 @@ class YellowFish:
             self.x -= self.speed
 
         if self.dir == 0 and self.x > 900:
-            # self.dir = 1
             self.reset()
         elif self.dir == 1 and self.x < -100:
-            # self.dir = 0
             self.reset()
 
+        if self.ai == True:
+            if self.rand_ai == 0:
+                print("change ai")
+                if self.dir == 1:
+                    self.dir = 0
+                else:
+                    self.dir = 1
+            else:
+                print("speed ai")
+                self.speed2 = self.speed
+                self.speed = 1
+
     def reset(self):
+        self.rand_ai = random.randint(0,1)
         self.dir = random.randint(0,1)
         if self.dir == 0:
             self.x = random.randint(-700,-100)
@@ -290,8 +292,6 @@ class YellowFish:
         self.speed = random.randint(1,3)
 
     def draw(self):
-        if self.state == False:
-               pass
         if self.dir == 0:
             self.image_right.clip_draw(self.frame*40, 0, 40, 25, self.x, self.y)
         else:
@@ -300,8 +300,17 @@ class YellowFish:
     def get_bb(self):
         return self.x - 18, self.y - 10, self.x + 18, self.y + 10
 
-    def draw_bb(self):
-        draw_rectangle(*self.get_bb())
+    def ai(self):
+        if self.rand_ai == 0:
+            print("change ai")
+            if self.dir == 1:
+                self.dir = 0
+            else:
+                self.dir = 1
+        else:
+            print("speed ai")
+            self.speed2 = self.speed
+            self.speed = 1
 
 class GoldFish:
     def __init__(self):
@@ -438,10 +447,8 @@ class Tuna:
             self.x -= self.speed
 
         if self.dir == 0 and self.x > 950:
-            # self.dir = 1
             self.reset()
         elif self.dir == 1 and self.x < -150:
-            # self.dir = 0
             self.reset()
 
     def reset(self):
@@ -535,18 +542,14 @@ def enter():
     tuna = [Tuna() for i in range(5)]
     shark = [Shark() for i in range(3)]
 
-
-
 def exit():
     close_canvas()
 
 def pause():
     pass
 
-
 def resume():
     pass
-
 
 def handle_events():
     global running
@@ -589,6 +592,20 @@ def collide(a, b):
 
     return True
 
+def inwhale(b):
+    left_whale, bottom_whale, right_whale, top_whale = whale.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    left_whale += 100
+    right_whale += 100
+
+    if left_whale > right_b: return False
+    if right_whale < left_b: return False
+    if top_whale < bottom_b: return False
+    if bottom_whale > top_b: return False
+
+    return True
+
 def update():
     whale.frame_time = get_time() - whale.current_time
     whale.current_time += whale.frame_time
@@ -626,7 +643,9 @@ def update():
                 if whale.hp < 220:
                     whale.hp += 1
 
-
+            if inwhale(i):
+                print("ai")
+                i.ai = True
 
     if whale.level >= 1:
         for i in goldfish:
@@ -687,38 +706,28 @@ def draw():
     back.draw()
     whale.ui_draw()
     item.draw()
-    # item.draw_bb()
 
     if whale.level >= 0:
         for i in yellowfish:
             i.draw()
-            # i.draw_bb()
-
 
     if whale.level >= 1:
         for i in goldfish:
             i.draw()
-            # i.draw_bb()
 
     if whale.level >= 3:
         for i in greenfish:
             i.draw()
-            # i.draw_bb()
 
     if whale.level >= 6:
         for i in tuna:
             i.draw()
-            # i.draw_bb()
 
     if whale.level >= 8:
         for i in shark:
             i.draw()
-            # i.draw_bb()
-
-
 
     whale.draw()
-    # whale.draw_bb()
 
     if whale.level_upgrade == True:
         whale.level_up_draw()
