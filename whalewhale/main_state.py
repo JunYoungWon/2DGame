@@ -645,7 +645,7 @@ def update():
 
             if inwhale(i):
                 print("ai")
-                i.ai = True
+                # i.ai = True
 
     if whale.level >= 1:
         for i in goldfish:
