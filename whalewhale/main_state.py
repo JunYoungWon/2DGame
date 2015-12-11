@@ -536,10 +536,10 @@ def enter():
     back = Back()
     item = Item()
 
-    yellowfish = [YellowFish() for i in range(15)]
-    goldfish = [GoldFish() for i in range(8)]
-    greenfish = [GreenFish() for i in range(8)]
-    tuna = [Tuna() for i in range(5)]
+    yellowfish = [YellowFish() for i in range(13)]
+    goldfish = [GoldFish() for i in range(7)]
+    greenfish = [GreenFish() for i in range(7)]
+    tuna = [Tuna() for i in range(4)]
     shark = [Shark() for i in range(3)]
 
 def exit():

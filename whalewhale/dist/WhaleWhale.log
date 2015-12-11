@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "mygame.py", line 14, in <module>
+  File "C:\Users\WJY\Documents\GitHub\2DGame\whalewhale\game_framework.py", line 87, in run
+    stack[-1].handle_events()
+  File "C:\Users\WJY\Documents\GitHub\2DGame\whalewhale\main_state.py", line 564, in handle_events
+    game_framework.change_state(title_state)
+  File "C:\Users\WJY\Documents\GitHub\2DGame\whalewhale\game_framework.py", line 49, in change_state
+    state.enter()
+  File "C:\Users\WJY\Documents\GitHub\2DGame\whalewhale\title_state.py", line 14, in enter
+    image = load_image('Resources//title.png')
+  File "C:\Python34\lib\site-packages\pico2d.py", line 268, in load_image
+    raise IOError
+OSError
+Traceback (most recent call last):
+  File "mygame.py", line 14, in <module>
+  File "C:\Users\WJY\Documents\GitHub\2DGame\whalewhale\game_framework.py", line 87, in run
+    stack[-1].handle_events()
+  File "C:\Users\WJY\Documents\GitHub\2DGame\whalewhale\main_state.py", line 564, in handle_events
+    game_framework.change_state(title_state)
+  File "C:\Users\WJY\Documents\GitHub\2DGame\whalewhale\game_framework.py", line 49, in change_state
+    state.enter()
+  File "C:\Users\WJY\Documents\GitHub\2DGame\whalewhale\title_state.py", line 14, in enter
+    image = load_image('Resources//title.png')
+  File "C:\Python34\lib\site-packages\pico2d.py", line 268, in load_image
+    raise IOError
+OSError
