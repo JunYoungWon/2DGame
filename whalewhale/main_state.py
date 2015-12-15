@@ -24,10 +24,10 @@ tuna = None
 shark = None
 running = True
 
-yellow_count = [3, 4, 5, 4, 4, 5, 3, 4, 4, 5]
-gold_count = [0, 0, 0, 3, 4, 5, 3, 4, 4, 5]
-green_count = [0, 0, 0, 0, 0, 0, 3, 3, 3, 5]
-tuna_count = [0, 0, 0, 0, 0, 0, 0, 0, 3, 5]
+yellow_count = [3, 4, 5, 4, 4, 5, 3, 4, 4, 5, 0]
+gold_count =   [0, 0, 0, 3, 4, 5, 3, 4, 4, 5, 0]
+green_count =  [0, 0, 0, 0, 0, 0, 3, 3, 3, 5, 0]
+tuna_count =   [0, 0, 0, 0, 0, 0, 0, 0, 3, 5, 0]
 
 class Whale:
 
@@ -102,9 +102,9 @@ class Whale:
         self.coll_sound = load_wav('Sound//coll_.wav')
         self.coll_sound.set_volume(30)
         self.levelup_sound = load_wav('Sound//levelup.wav')
-        self.levelup_sound.set_volume(200)
+        self.levelup_sound.set_volume(400)
         self.item_sound = load_wav('Sound//item.wav')
-        self.item_sound.set_volume(200)
+        self.item_sound.set_volume(300)
 
 
         self.current_time = get_time()
@@ -168,14 +168,14 @@ class Whale:
 
 
     def level_up(self):
-        if self.level >= 10:
-            game_framework.change_state(gameclear_state)
+        if self.level >= 9:
+            game_framework.push_state(gameclear_state)
         self.level_upgrade = True
         self.level_up_draw()
 
 
         if self.level >= 3:
-            print("item")
+            # print("item")
             item.show = True
         self.levelup_sound.play()
         self.level += 1
@@ -216,12 +216,12 @@ class Item:
     def __init__(self):
         self.show = False
         self.x = random.randint(100,700)
-        self.y = -200
+        self.y = -70
         self.item_image = load_image('Resources//item.png')
 
     def update(self):
         if self.show == True:
-            self.y += 3
+            self.y += 7
             if self.y > 710:
                 self.show = False
 
@@ -253,8 +253,8 @@ class YellowFish:
         self.image_right = load_image('Resources//Ryellowfish.png')
         self.image_left = load_image('Resources//Lyellowfish.png')
         self.speed = random.randint(1,3)
-        self.rand_ai = random.randint(0,1)
         self.ai = False
+        self.state = False
 
     def update(self):
         self.frame = (self.frame + 1) % 6
@@ -269,19 +269,18 @@ class YellowFish:
             self.reset()
 
         if self.ai == True:
-            if self.rand_ai == 0:
-                print("change ai")
-                if self.dir == 1:
+            if self.state == False:
+
+                if whale.dir == True:
                     self.dir = 0
                 else:
                     self.dir = 1
-            else:
-                print("speed ai")
-                self.speed2 = self.speed
-                self.speed = 1
+
+                self.state = True
 
     def reset(self):
-        self.rand_ai = random.randint(0,1)
+        self.ai = False
+        self.state = False
         self.dir = random.randint(0,1)
         if self.dir == 0:
             self.x = random.randint(-700,-100)
@@ -300,18 +299,6 @@ class YellowFish:
     def get_bb(self):
         return self.x - 18, self.y - 10, self.x + 18, self.y + 10
 
-    def ai(self):
-        if self.rand_ai == 0:
-            print("change ai")
-            if self.dir == 1:
-                self.dir = 0
-            else:
-                self.dir = 1
-        else:
-            print("speed ai")
-            self.speed2 = self.speed
-            self.speed = 1
-
 class GoldFish:
     def __init__(self):
         self.dir = random.randint(0,1)
@@ -325,6 +312,7 @@ class GoldFish:
         self.image_right = load_image('Resources//Rgoldfish.png')
         self.image_left = load_image('Resources//Lgoldfish.png')
         self.speed = random.randint(1,3)
+        self.ai = False
         self.state = False
 
     def update(self):
@@ -337,13 +325,23 @@ class GoldFish:
             self.x -= self.speed
 
         if self.dir == 0 and self.x > 900:
-            # self.dir = 1
             self.reset()
         elif self.dir == 1 and self.x < -100:
-            # self.dir = 0
             self.reset()
 
+        if self.ai == True:
+            if self.state == False:
+
+                if whale.dir == True:
+                    self.dir = 0
+                else:
+                    self.dir = 1
+
+                self.state = True
+
     def reset(self):
+        self.ai = False
+        self.state = False
         self.dir = random.randint(0,1)
         if self.dir == 0:
             self.x = random.randint(-700,-100)
@@ -380,6 +378,7 @@ class GreenFish:
         self.image_right = load_image('Resources//Rgreenfish.png')
         self.image_left = load_image('Resources//Lgreenfish.png')
         self.speed = random.randint(2,4)
+        self.ai = False
         self.state = False
 
     def update(self):
@@ -392,13 +391,23 @@ class GreenFish:
             self.x -= self.speed
 
         if self.dir == 0 and self.x > 900:
-            # self.dir = 1
             self.reset()
         elif self.dir == 1 and self.x < -100:
-            # self.dir = 0
             self.reset()
 
+        if self.ai == True:
+            if self.state == False:
+
+                if whale.dir == True:
+                    self.dir = 0
+                else:
+                    self.dir = 1
+
+                self.state = True
+
     def reset(self):
+        self.ai = False
+        self.state = False
         self.dir = random.randint(0,1)
         if self.dir == 0:
             self.x = random.randint(-700,-100)
@@ -435,6 +444,7 @@ class Tuna:
         self.image_right = load_image('Resources//Rtuna.png')
         self.image_left = load_image('Resources//Ltuna.png')
         self.speed = random.randint(2,4)
+        self.ai = False
         self.state = False
 
     def update(self):
@@ -451,7 +461,19 @@ class Tuna:
         elif self.dir == 1 and self.x < -150:
             self.reset()
 
+        if self.ai == True:
+            if self.state == False:
+
+                if whale.dir == True:
+                    self.dir = 0
+                else:
+                    self.dir = 1
+
+                self.state = True
+
     def reset(self):
+        self.ai = False
+        self.state = False
         self.dir = random.randint(0,1)
         if self.dir == 0:
             self.x = random.randint(-700,-100)
@@ -563,7 +585,6 @@ def handle_events():
                running = False
                game_framework.change_state(title_state)
             if event.key == SDLK_UP:
-
                 whale.state = Whale.UP
             if event.key == SDLK_DOWN:
 
@@ -596,14 +617,13 @@ def inwhale(b):
     left_whale, bottom_whale, right_whale, top_whale = whale.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    left_whale += 100
-    right_whale += 100
+    left_whale -= 150
+    right_whale += 150
 
     if left_whale > right_b: return False
     if right_whale < left_b: return False
     if top_whale < bottom_b: return False
     if bottom_whale > top_b: return False
-
     return True
 
 def update():
@@ -642,10 +662,11 @@ def update():
                     whale.eat_yellow -= 1
                 if whale.hp < 220:
                     whale.hp += 1
-
             if inwhale(i):
-                print("ai")
-                # i.ai = True
+                i.ai = True
+            else:
+                i.ai = False
+                i.state = False
 
     if whale.level >= 1:
         for i in goldfish:
@@ -661,6 +682,12 @@ def update():
                 elif whale.item_eat == False:
                     whale.hp -= 10
                     whale.coll_sound.play()
+            if whale.level >= 3:
+                if inwhale(i):
+                    i.ai = True
+                else:
+                    i.ai = False
+                    i.state = False
 
     if whale.level >= 3:
         for i in greenfish:
@@ -676,7 +703,12 @@ def update():
                 elif whale.item_eat == False:
                     whale.hp -= 15
                     whale.coll_sound.play()
-
+            if whale.level >= 6:
+                if inwhale(i):
+                    i.ai = True
+                else:
+                    i.ai = False
+                    i.state = False
 
     if whale.level >= 6:
         for i in tuna:
@@ -692,6 +724,12 @@ def update():
                 elif whale.item_eat == False:
                     whale.hp -= 20
                     whale.coll_sound.play()
+            if whale.level >= 8:
+                if inwhale(i):
+                    i.ai = True
+                else:
+                    i.ai = False
+                    i.state = False
 
     if whale.level >= 8:
         for i in shark:

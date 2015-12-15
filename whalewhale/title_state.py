@@ -17,11 +17,6 @@ def enter():
     bgm.set_volume(150)
     bgm.repeat_play()
 
-    # start = load_wav('Sound//eat.wav')
-    # start.set_volume(64)
-    # start.play()
-
-
 def exit():
     global image
     del(image)
