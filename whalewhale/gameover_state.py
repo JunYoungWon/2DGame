@@ -12,10 +12,6 @@ def enter():
     global  image
     image = load_image('Resources//game_over.png')
 
-    gameover_bgm = load_wav('Sound//game_over.ogg')
-    gameover_bgm.set_volume(64)
-    gameover_bgm.repeat_play()
-
 
 def exit():
     global image
