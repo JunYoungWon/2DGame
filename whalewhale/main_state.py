@@ -82,6 +82,12 @@ class Whale:
                                   load_image('Resources//level_count_8.png'),
                                   load_image('Resources//level_count_9.png'),
                                   load_image('Resources//level_count_10.png')]
+        self.item_eat_image = [load_image('Resources//item_eat5.png'),
+                                  load_image('Resources//item_eat6.png'),
+                                  load_image('Resources//item_eat7.png'),
+                                  load_image('Resources//item_eat8.png'),
+                                  load_image('Resources//item_eat9.png'),
+                                  load_image('Resources//item_eat10.png')]
 
         self.level = 0
         self.state = Whale.STOP
@@ -150,8 +156,7 @@ class Whale:
             self.image_left[self.level].draw(self.x, self.y)
 
         if self.item_eat == True:
-            self.item_eat_image.clip_draw(self.level*25, 0, self.level*25,  self.level*27, self.x, self.y)
-            # self.item_eat_image.draw(self.x, self.y)
+            self.item_eat_image[self.level-4].draw(self.x, self.y)
             pass
 
     def get_bb(self):

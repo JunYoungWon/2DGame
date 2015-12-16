@@ -81,7 +81,7 @@ manifest_template = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 
 mygame = Target(
     script = 'mygame.py',
-    dest_base = 'HIT',
+    dest_base = '자라나라 고래고래',
     icon_resources = [(1, r"Resources//pico2d.ico")],
     other_resources = [(RT_MANIFEST, 1, (manifest_template % dict(prog="mygame", level="asInvoker")).encode("utf-8"))]
     )
